@@ -33,7 +33,7 @@ if (taxaDeJaTaPodendo >= 100) {
   trocarIcone("fi fi-rr-social-network");
 }else if (taxaDeJaTaPodendo >= 50) {
   texto = "Tá quase podendo! Faltam " + tempoAteJaTaPodendo + " minutos.";
-  trocarIcone("fi fi-rr-brands-instagram");
+  trocarIcone("fi fi-rr-hand-sparkles");
 }else{
   texto = "Ainda não pode! Faltam " + tempoAteJaTaPodendo + " minutos.";
   trocarIcone("fi fi-rr-hand");
