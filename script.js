@@ -1,12 +1,11 @@
 const now = new Date();
 const inicioDoExpediente = new Date();
 const fimDoExpediente = new Date();
-const result = document.getElementById("texto");
+const background = document.getElementById('body');
 const icon = document.getElementById("icon");
-const box = document.getElementById("box");
-let texto = "";
-let rgbValue = "";
-let rgbBackground = "";
+const result = document.getElementById("result");
+const progress = document.getElementById("progress");
+const btn = document.getElementById("share");
 
 inicioDoExpediente.setHours(8, 0, 0, 0);
 fimDoExpediente.setHours(17, 0, 0, 0);
@@ -15,34 +14,35 @@ const tempoDeExpediente = Math.floor((fimDoExpediente - inicioDoExpediente) / (1
 const tempoAteJaTaPodendo = Math.floor((fimDoExpediente - now) / (1000 * 60));
 const taxaDeJaTaPodendo = Math.round((1 - tempoAteJaTaPodendo/tempoDeExpediente)*100);
 
-const trocarIcone = (className, cor) => {
+const trocarIcone = (className) => {
   icon.className = className;
   icon.style.display = 'none';
   setTimeout(() => {
     icon.style.display = 'inline-block';
-    icon.style.color = cor;
   }, 10);
 }
 
-
-if (taxaDeJaTaPodendo >= 100) {
-  texto = "Já pode!";
-  rgbValue = "#2e7d32";
-  rgbBackground = "#e8f5e5";
-  trocarIcone("fi fi-rr-social-network", rgbBackground);
-}else if (taxaDeJaTaPodendo >= 80) {
-  texto = "Calma que já tá quase podendo! Faltam " + tempoAteJaTaPodendo + " minutos.";
-  rgbValue = "#f9a825";
-  rgbBackground = "#fdecc0";
-  trocarIcone("fi fi-rr-hand-sparkles", rgbBackground);
-}else{
-  texto = "Ainda não pode! Faltam " + tempoAteJaTaPodendo + " minutos.";
-  rgbValue = "#b71c1c";
-  rgbBackground = "#f4cec2";
-  trocarIcone("fi fi-rr-hand", rgbBackground);
+const resultado = (textoFinal, corDeFundo, classeDoBotao, corDaBarra) => {
+  result.innerHTML = textoFinal;
+  background.classList.add(corDeFundo);
+  btn.classList.add(classeDoBotao);
+  progress.style.width = `${taxaDeJaTaPodendo}%`;
+  progress.classList.add(corDaBarra);
 }
 
-box.style.backgroundColor = rgbValue;
-box.style.color = rgbBackground;
-result.style.color = rgbBackground;
-result.innerHTML = texto;
+const compartilhar = () => {
+  const texto = result.innerText;
+  const url = window.location.href;
+  window.open(`https://api.whatsapp.com/send?text=${texto} - ${url}`, '_blank');
+}
+
+if (taxaDeJaTaPodendo >= 100) {
+  resultado("Já pode!", "bg-success-subtle", "btn-success", "bg-success");
+  trocarIcone("fi fi-rr-social-network display-3 text-success");
+}else if (taxaDeJaTaPodendo >= 80) {
+  resultado(`Calma que já tá quase podendo! Faltam ${tempoAteJaTaPodendo} minutos.`, "bg-warning-subtle", "btn-warning", "bg-warning");
+  trocarIcone("fi fi-rr-hand-sparkles display-3 text-warning");
+}else{
+  resultado(`Ainda não pode! Faltam ${tempoAteJaTaPodendo} minutos.`, "bg-danger-subtle", "btn-danger", "bg-danger");
+  trocarIcone("fi fi-rr-hand display-3 text-danger");
+}
