@@ -37,7 +37,7 @@ const compartilhar = () => {
   window.open(`https://api.whatsapp.com/send?text=${texto} - ${url}`, '_blank');
 }
 
-if (taxaDeJaTaPodendo >= 100) {
+if (taxaDeJaTaPodendo >= 100 || now.getDay() === 0 || now.getDay() === 6) {
   resultado("Já pode!", "bg-success-subtle", "btn-success", "bg-success");
   trocarIcone("fi fi-rr-social-network display-3 text-success");
 }else if (taxaDeJaTaPodendo >= 80) {
@@ -47,3 +47,4 @@ if (taxaDeJaTaPodendo >= 100) {
   resultado(`Ainda não pode! Faltam ${tempoEmHHMM}.`, "bg-danger-subtle", "btn-danger", "bg-danger");
   trocarIcone("fi fi-rr-hand display-3 text-danger");
 }
+
